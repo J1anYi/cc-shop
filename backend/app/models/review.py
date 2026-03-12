@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import json
-
-db = SQLAlchemy()
+from .base import db
 
 class Review(db.Model):
     __tablename__ = 'reviews'

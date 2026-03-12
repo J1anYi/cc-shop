@@ -1,7 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-db = SQLAlchemy()
+from .base import db
 
 class Banner(db.Model):
     __tablename__ = 'banners'

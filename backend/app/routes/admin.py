@@ -1,12 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import func
-from app.models.user import db, User
-from app.models.product import Product, Category, ProductSKU
-from app.models.order import Order, OrderItem
-from app.models.banner import Banner
-from app.models.review import Review
+from app.models import db, User, Product, Category, ProductSKU, Order, OrderItem, Banner, Review
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -48,7 +44,6 @@ def get_dashboard():
     recent_orders = Order.query.order_by(Order.created_at.desc()).limit(5).all()
 
     # Sales by day (last 7 days)
-    from datetime import timedelta
     sales_data = []
     for i in range(6, -1, -1):
         date = datetime.utcnow().date() - timedelta(days=i)

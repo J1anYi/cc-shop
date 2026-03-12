@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-
-db = SQLAlchemy()
+from .base import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -16,12 +14,6 @@ class User(db.Model):
     status = db.Column(db.String(20), default='active')  # active, inactive, banned
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # Relationships
-    cart_items = db.relationship('CartItem', backref='user', lazy='dynamic', cascade='all, delete-orphan')
-    favorites = db.relationship('Favorite', backref='user', lazy='dynamic', cascade='all, delete-orphan')
-    orders = db.relationship('Order', backref='user', lazy='dynamic', cascade='all, delete-orphan')
-    reviews = db.relationship('Review', backref='user', lazy='dynamic', cascade='all, delete-orphan')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

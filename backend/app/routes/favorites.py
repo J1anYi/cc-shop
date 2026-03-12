@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models.user import db
-from app.models.favorite import Favorite
-from app.models.product import Product
+from app.models import db, Favorite, Product
 
 favorites_bp = Blueprint('favorites', __name__)
 

@@ -1,7 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-db = SQLAlchemy()
+from .base import db
 
 class CartItem(db.Model):
     __tablename__ = 'cart_items'
@@ -14,8 +12,8 @@ class CartItem(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
-    product = db.relationship('Product', backref='cart_items')
-    sku = db.relationship('ProductSKU', backref='cart_items')
+    product = db.relationship('Product', backref='cart_items_ref')
+    sku = db.relationship('ProductSKU', backref='cart_items_ref')
 
     def to_dict(self):
         sku_data = self.sku.to_dict() if self.sku else None
@@ -23,7 +21,7 @@ class CartItem(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'product_id': self.product_id,
-            'product': self.product.to_dict() if self.product else None,
+            'product': self.product.to_dict(include_skus=False) if self.product else None,
             'sku_id': self.sku_id,
             'sku': sku_data,
             'quantity': self.quantity,

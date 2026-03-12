@@ -1,3 +1,4 @@
+from .base import db
 from .user import User
 from .product import Product, Category, ProductSKU
 from .order import Order, OrderItem
@@ -7,6 +8,6 @@ from .review import Review
 from .banner import Banner
 
 __all__ = [
-    'User', 'Product', 'Category', 'ProductSKU',
+    'db', 'User', 'Product', 'Category', 'ProductSKU',
     'Order', 'OrderItem', 'CartItem', 'Favorite', 'Review', 'Banner'
 ]

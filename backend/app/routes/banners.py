@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models.user import db
-from app.models.banner import Banner
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models.user import User
+from app.models import db, Banner, User
 
 banners_bp = Blueprint('banners', __name__)
 

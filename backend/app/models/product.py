@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import json
-
-db = SQLAlchemy()
+from .base import db
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -45,7 +43,6 @@ class Product(db.Model):
 
     # Relationships
     skus = db.relationship('ProductSKU', backref='product', lazy='dynamic', cascade='all, delete-orphan')
-    reviews = db.relationship('Review', backref='product', lazy='dynamic')
 
     def get_images(self):
         if self.images:

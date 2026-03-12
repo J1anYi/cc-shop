@@ -1,7 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-db = SQLAlchemy()
+from .base import db
 
 class Favorite(db.Model):
     __tablename__ = 'favorites'
@@ -12,13 +10,13 @@ class Favorite(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
-    product = db.relationship('Product', backref='favorites')
+    product = db.relationship('Product', backref='favorites_ref')
 
     def to_dict(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
             'product_id': self.product_id,
-            'product': self.product.to_dict() if self.product else None,
+            'product': self.product.to_dict(include_skus=False) if self.product else None,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }

@@ -1,21 +1,35 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
-from flask_restful import Api
 from app.config import Config
+from app.models import db
+import json
 
-db = SQLAlchemy()
 jwt = JWTManager()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # Ensure JWT identity is string
+    app.config['JWT_JSON_KEY'] = 'sub'
+    app.config['JWT_DECODE_LEEWAY'] = 10
+
     # Initialize extensions
     db.init_app(app)
     jwt.init_app(app)
     CORS(app)
+
+    # JWT callbacks to handle string identity
+    @jwt.user_identity_loader
+    def user_identity_lookup(user):
+        return str(user)
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        from app.models import User
+        return User.query.get(int(identity))
 
     # Create upload folder if not exists
     import os
